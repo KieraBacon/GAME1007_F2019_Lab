@@ -49,7 +49,11 @@ bool init(const char* title, int xpos, int ypos, int width, int height, int flag
 	/*---------- Everything is okay. Start engine. ----------*/
 	g_fps = (Uint32)round((1 / (double)FPS) * 1000);
 	g_iKeystates = SDL_GetKeyboardState(nullptr);
-	g_rBox = { WIDTH / 2,HEIGHT / 2,50,100 }; // x, y, w, h.
+	
+	// Create the spring rectangles.
+	g_src = { 0,0,154,221 };
+	g_dst = {width/2 - g_src.w/2, height/2 - g_src.h / 2, g_src.w, g_src.h };
+
 	g_bRunning = true;
 	cout << "Success!" << endl;
 	return true;
