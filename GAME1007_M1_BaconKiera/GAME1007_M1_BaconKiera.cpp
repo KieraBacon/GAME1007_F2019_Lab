@@ -34,11 +34,16 @@ bool init(const char* title, int xpos, int ypos, int width, int height, int flag
 			g_pRenderer = SDL_CreateRenderer(g_pWindow, -1, 0);
 			if (g_pRenderer != nullptr)
 			{
-				/*---------- Later. ----------*/
+				/*---------- Init png. ----------*/
+				if (IMG_Init(IMG_INIT_PNG))
+				{
+					g_pTexture = IMG_LoadTexture(g_pRenderer, "ship.png");
+				}
+				else return false;
 			}
-			else return false;
+			else return false;	// Renderer init fail.
 		}
-		else return false;
+		else return false; // Window init fail.
 	}
 	else return false;	//=	===	===	===	===	=> Everything is not okay.
 	/*---------- Everything is okay. Start engine. ----------*/
