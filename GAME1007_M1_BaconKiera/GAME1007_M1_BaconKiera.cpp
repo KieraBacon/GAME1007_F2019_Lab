@@ -39,7 +39,7 @@ bool init(const char* title, int xpos, int ypos, int width, int height, int flag
 				{
 					g_pTexture = IMG_LoadTexture(g_pRenderer, "ship.png");
 				}
-				else return false;
+				else return false; // IMG init fail.
 			}
 			else return false;	// Renderer init fail.
 		}
@@ -52,7 +52,7 @@ bool init(const char* title, int xpos, int ypos, int width, int height, int flag
 	
 	// Create the spring rectangles.
 	g_src = { 0,0,154,221 };
-	g_dst = {width/2 - g_src.w/2, height/2 - g_src.h / 2, g_src.w, g_src.h };
+	g_dst = {width/2 - g_src.w/6, height - g_src.h/2, g_src.w/3, g_src.h/3 };
 
 	g_bRunning = true;
 	cout << "Success!" << endl;
@@ -105,13 +105,13 @@ bool keyDown(SDL_Scancode c)
 void update()
 {
 	if (keyDown(SDL_SCANCODE_W))
-		g_rBox.y -= g_iSpeed;
+		g_dst.y -= g_iSpeed;
 	if (keyDown(SDL_SCANCODE_S))
-		g_rBox.y += g_iSpeed;
+		g_dst.y += g_iSpeed;
 	if (keyDown(SDL_SCANCODE_A))
-		g_rBox.x -= g_iSpeed;
+		g_dst.x -= g_iSpeed;
 	if (keyDown(SDL_SCANCODE_D))
-		g_rBox.x += g_iSpeed;
+		g_dst.x += g_iSpeed;
 }
 
 void render()
@@ -120,8 +120,7 @@ void render()
 	SDL_SetRenderDrawColor(g_pRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(g_pRenderer);
 	/*---------- Render stuff. ----------*/
-	SDL_SetRenderDrawColor(g_pRenderer, 0, 255, 0, 255);
-	SDL_RenderFillRect(g_pRenderer, &g_rBox);
+	SDL_RenderCopy(g_pRenderer, g_pTexture, &g_src, &g_dst);
 	/*---------- Drawing new. ----------*/
 	SDL_RenderPresent(g_pRenderer);
 }
@@ -129,6 +128,7 @@ void render()
 void clean()
 {
 	cout << "Cleaning game." << endl;
+	SDL_DestroyTexture(g_pTexture);
 	SDL_DestroyRenderer(g_pRenderer);
 	SDL_DestroyWindow(g_pWindow);
 	SDL_Quit();
